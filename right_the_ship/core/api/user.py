@@ -49,6 +49,9 @@ def update_user(request, user_id: int, data: UserUpdateIn):
 
 @router.delete("/{user_id}/")
 def delete_user(request, user_id: int):
-    user = get_object_or_404(User, id=user_id)
-    user.delete()
-    return {"success": True}
+    try:
+        user = get_object_or_404(User, id=user_id)
+        user.delete()
+        return JsonResponse({"success": True})
+    except Http404:
+        raise HttpError(404, "User not found")
