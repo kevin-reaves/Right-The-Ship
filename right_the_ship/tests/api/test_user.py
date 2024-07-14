@@ -13,17 +13,6 @@ from right_the_ship.core.api.user import update_user, create_user, get_user, del
 from right_the_ship.core.schemas.user import UserUpdateIn, UserIn
 
 
-@pytest.fixture
-def mock_user():
-    user = MagicMock(spec=User)
-    user.id = 1
-    user.username = "old_username"
-    user.email = "old_email@example.com"
-    user.password = "old_password"
-    user.save = MagicMock(name="save")
-    return user
-
-
 class TestUser(unittest.TestCase):
     def setUp(self):
         self.patcher_get_object_or_404 = patch(
