@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "profile",
+			"name": "User",
 			"item": [
 				{
 					"name": "Create User",
@@ -29,7 +29,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"Kevin2\",\r\n    \"password\": \"don't hack me bro\",\r\n    \"email\": \"Kevin@email.com\"\r\n}",
+							"raw": "{\r\n    \"username\": \"Kevin\",\r\n    \"password\": \"don't hack me bro\",\r\n    \"email\": \"Kevin@email.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -112,6 +112,247 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "Create Single Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set('created_single_task', jsonData[\"id\"]);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user_id\": 1,\r\n  \"title\": \"make nachos\",\r\n  \"description\": \"nachos are a food made of chips\",\r\n  \"task_type\": \"SINGLE\",\r\n  \"start_date\": \"2030-01-01\",\r\n  \"single_task\": {\r\n    \"end_date\": \"2030-01-02\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}tasks/",
+							"host": [
+								"{{api}}tasks"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}tasks/{{created_single_task}}/",
+							"host": [
+								"{{api}}tasks"
+							],
+							"path": [
+								"{{created_single_task}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Single Task",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user_id\": 2,\r\n  \"title\": \"make nachos update\",\r\n  \"description\": \"nachos are a food made of chips\",\r\n  \"task_type\": \"SINGLE\",\r\n  \"start_date\": \"2031-01-01\",\r\n  \"single_task\": {\r\n    \"end_date\": \"2031-01-02\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}tasks/{{created_single_task}}/",
+							"host": [
+								"{{api}}tasks"
+							],
+							"path": [
+								"{{created_single_task}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Single Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api}}tasks/{{created_single_task}}/",
+							"host": [
+								"{{api}}tasks"
+							],
+							"path": [
+								"{{created_single_task}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Recurring Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set('created_recurring_task', jsonData[\"id\"]);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user_id\": 1,\r\n  \"title\": \"make nachos\",\r\n  \"description\": \"nachos are a food made of chips\",\r\n  \"task_type\": \"RECURRING\",\r\n  \"start_date\": \"2030-01-01\",\r\n  \"recurring_task\": {\r\n    \"end_date\": \"2030-12-31\",\r\n    \"frequency\": \"WEEKLY\",\r\n    \"days_of_week\": [\r\n        {\"day_of_week\": 0},\r\n        {\"day_of_week\": 2}\r\n    ]  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}tasks/",
+							"host": [
+								"{{api}}tasks"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recurring Task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}tasks/{{created_recurring_task}}/",
+							"host": [
+								"{{api}}tasks"
+							],
+							"path": [
+								"{{created_recurring_task}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Recurring Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user_id\": 1,\r\n  \"title\": \"make nachos\",\r\n  \"description\": \"nachos are a food made with chips\",\r\n  \"task_type\": \"RECURRING\",\r\n  \"start_date\": \"2030-01-01\",\r\n  \"recurring_task\": {\r\n    \"end_date\": \"2030-12-31\",\r\n    \"frequency\": \"BIWEEKLY\",\r\n    \"days_of_week\": [\r\n        {\"day_of_week\": 0},\r\n        {\"day_of_week\": 2}\r\n    ]  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}tasks/{{created_recurring_task}}/",
+							"host": [
+								"{{api}}tasks"
+							],
+							"path": [
+								"{{created_recurring_task}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recurring Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api}}tasks/{{created_recurring_task}}/",
+							"host": [
+								"{{api}}tasks"
+							],
+							"path": [
+								"{{created_recurring_task}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -144,6 +385,16 @@
 		{
 			"key": "created_user",
 			"value": ""
+		},
+		{
+			"key": "created_single_task",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "created_recurring_task",
+			"value": "",
+			"type": "string"
 		}
 	]
 }

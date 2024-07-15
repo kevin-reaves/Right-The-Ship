@@ -14,3 +14,7 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "right_the_ship.settings")
 
 application = get_wsgi_application()
+
+from right_the_ship.core.setup import setup_signals
+
+setup_signals()
