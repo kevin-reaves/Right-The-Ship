@@ -10,7 +10,7 @@ from ninja.errors import HttpError
 from pydantic import ValidationError
 
 from right_the_ship.core.api.user import update_user, create_user, get_user, delete_user
-from right_the_ship.core.schemas.user import UserUpdateIn, UserIn
+from right_the_ship.core.schemas import UserUpdateIn, UserIn
 
 
 class TestUser(TestCase):
