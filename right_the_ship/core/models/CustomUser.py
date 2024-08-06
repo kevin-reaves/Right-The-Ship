@@ -1,8 +1,11 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
+from right_the_ship.core.mixins.SoftDelete import SoftDeleteMixin
+from right_the_ship.core.mixins.Timestamp import TimestampMixin
 
-class CustomUser(AbstractUser):
+
+class CustomUser(AbstractUser, TimestampMixin, SoftDeleteMixin):
     email = models.EmailField(unique=True)
 
     groups = models.ManyToManyField(
