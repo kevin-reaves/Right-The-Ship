@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from right_the_ship.core.api.task import create_task
-from right_the_ship.core.models import CustomUser, Frequency, Task, RecurringTask
+from right_the_ship.core.models import CustomUser, Task, RecurringTask
 from right_the_ship.core.schemas import TaskInSchema
 
 
@@ -35,7 +35,7 @@ class TestCreateTask(TestCase):
         self.user = CustomUser.objects.get_or_create(
             username="testuser", password="password"
         )[0]
-        self.frequency = Frequency.objects.create(name="daily")
+        self.frequency = RecurringTask.DAILY
 
     def test_create_single_task(self):
         self.mock_get_object_or_404.return_value = self.user

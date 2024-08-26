@@ -3,7 +3,7 @@ from unittest.mock import patch
 from right_the_ship.core.api.task import update_task, create_task
 from django.core.exceptions import ValidationError
 
-from right_the_ship.core.models import Frequency, CustomUser, Task, RecurringTask
+from right_the_ship.core.models import CustomUser, Task, RecurringTask
 from right_the_ship.core.schemas import TaskInSchema
 
 
@@ -48,8 +48,8 @@ class TestUpdateTask(TestCase):
         self.addCleanup(self.patcher_get_object_or_404.stop)
 
         self.user = CustomUser.objects.create(username="testuser", password="password")
-        self.frequency_daily = Frequency.objects.create(name="daily")
-        self.frequency_weekly = Frequency.objects.create(name="weekly")
+        self.frequency_daily = RecurringTask.DAILY
+        self.frequency_weekly = RecurringTask.WEEKLY
 
         self.mock_get_object_or_404.side_effect = (
             self.mock_get_object_or_404_side_effect
@@ -60,8 +60,8 @@ class TestUpdateTask(TestCase):
             return self.user
         elif model == Task:
             return Task.objects.get(*args, **kwargs)
-        elif model == Frequency:
-            return Frequency.objects.get(*args, **kwargs)
+        elif model == RecurringTask:
+            return RecurringTask.objects.get(*args, **kwargs)
         else:
             raise ValueError("Unknown model")
 

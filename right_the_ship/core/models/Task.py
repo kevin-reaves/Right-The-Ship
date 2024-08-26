@@ -46,6 +46,8 @@ class RecurringTask(models.Model):
     def clean(self):
         if self.start_date and self.end_date and self.start_date > self.end_date:
             raise ValidationError("Start date must be before end date")
+        if self.frequency not in dict(self.FREQUENCY_CHOICES).keys():
+            raise ValidationError("Invalid frequency")
 
     def save(self, *args, **kwargs):
         self.clean()

@@ -4,7 +4,7 @@ from unittest.mock import patch
 from django.test import TestCase
 
 from right_the_ship.core.api.task import create_task, get_task, delete_task
-from right_the_ship.core.models import CustomUser, Frequency, Task
+from right_the_ship.core.models import CustomUser, Task, RecurringTask
 from right_the_ship.core.schemas import TaskInSchema
 
 
@@ -33,8 +33,8 @@ class TestGetDeleteTask(TestCase):
         self.addCleanup(self.patcher_get_object_or_404.stop)
 
         self.user = CustomUser.objects.create(username="testuser", password="password")
-        self.frequency_daily = Frequency.objects.create(name="daily")
-        self.frequency_weekly = Frequency.objects.create(name="weekly")
+        self.frequency_daily = RecurringTask.DAILY
+        self.frequency_weekly = RecurringTask.WEEKLY
 
         self.mock_get_object_or_404.side_effect = (
             self.mock_get_object_or_404_side_effect
