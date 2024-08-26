@@ -1,2 +1,2 @@
 from .CustomUser import CustomUser
-from .Task import Task, RecurringTask, Frequency, SingleTask
+from .Task import Task, RecurringTask, SingleTask

@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from ninja import Router
 
 from right_the_ship.core.models.CustomUser import CustomUser
-from right_the_ship.core.models.Task import Task, Frequency, RecurringTask
+from right_the_ship.core.models.Task import Task, RecurringTask
 from right_the_ship.core.schemas.task import TaskSchema, TaskDetailSchema, TaskInSchema
 
 router = Router()
@@ -19,7 +19,7 @@ router = Router()
 def generate_task_detail_schema(task: Task) -> TaskDetailSchema:
     recurring_task = getattr(task, "recurringtask", None)
     is_recurring = recurring_task is not None
-    frequency = recurring_task.frequency.name if is_recurring else None
+    frequency = recurring_task.frequency if is_recurring else None
     start_date = recurring_task.start_date if is_recurring else None
     end_date = recurring_task.end_date if is_recurring else None
 
@@ -32,6 +32,7 @@ def generate_task_detail_schema(task: Task) -> TaskDetailSchema:
     )
 
 
+@router.post("/", response=TaskDetailSchema)
 def create_task(request, data: TaskInSchema):
     task_data = data.dict()
     user_id = task_data.pop("user_id")
@@ -44,10 +45,9 @@ def create_task(request, data: TaskInSchema):
     task = Task.objects.create(user=user, **task_data)
 
     if frequency and start_date:
-        frequency_instance = Frequency.objects.get_or_create(name=frequency)[0]
         RecurringTask.objects.create(
             task=task,
-            frequency=frequency_instance,
+            frequency=frequency,
             start_date=start_date,
             end_date=end_date,
         )
@@ -68,6 +68,7 @@ def delete_task(request, task_id: int):
     return JsonResponse({"success": True})
 
 
+@router.patch("/{task_id}/", response=TaskDetailSchema)
 def update_task(request, task_id: int, data: TaskInSchema):
     task_data = data.dict()
     user_id = task_data.pop("user_id")
@@ -78,17 +79,17 @@ def update_task(request, task_id: int, data: TaskInSchema):
     end_date = task_data.pop("end_date", None)
 
     task = get_object_or_404(Task, id=task_id)
+
     task.user = user
     for attr, value in task_data.items():
         setattr(task, attr, value)
     task.save()
 
     if frequency and start_date:
-        frequency_instance = Frequency.objects.get_or_create(name=frequency)[0]
         RecurringTask.objects.update_or_create(
             task=task,
             defaults={
-                "frequency": frequency_instance,
+                "frequency": frequency,
                 "start_date": start_date,
                 "end_date": end_date,
             },

@@ -34,10 +34,13 @@ def get_user(request, user_id: int):
     )
 
 
+@router.patch("/{user_id}/", response=UserOut)
 def update_user(request, user_id: int, data: UserUpdateIn):
     user = get_object_or_404(CustomUser, id=user_id)
     try:
-        user.username = data.username
+        # Filter out username or other unique fields if not provided
+        for key, value in data.dict(exclude_unset=True).items():
+            setattr(user, key, value)
         user.save()
         return JsonResponse(
             UserOut(id=user.id, username=user.username, email=user.email).dict()

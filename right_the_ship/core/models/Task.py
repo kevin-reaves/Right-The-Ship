@@ -18,7 +18,7 @@ class Task(TimestampMixin, SoftDeleteMixin):
         return self.title
 
 
-class Frequency(models.Model):
+class RecurringTask(models.Model):
     DAILY = "daily"
     WEEKLY = "weekly"
     BIWEEKLY = "biweekly"
@@ -35,29 +35,13 @@ class Frequency(models.Model):
         (YEARLY, "Yearly"),
     ]
 
-    name = models.CharField(max_length=10, choices=FREQUENCY_CHOICES, unique=True)
-
-    def __str__(self):
-        return self.get_name_display()
-
-    def clean(self):
-        if self.name not in dict(self.FREQUENCY_CHOICES):
-            raise ValidationError(f"{self.name} is not a valid frequency")
-
-    def save(self, *args, **kwargs):
-        self.clean()
-        if not Frequency.objects.filter(name=self.name).exists():
-            super(Frequency, self).save(*args, **kwargs)
-
-
-class RecurringTask(models.Model):
     task = models.OneToOneField(Task, on_delete=models.CASCADE)
-    frequency = models.ForeignKey(Frequency, on_delete=models.CASCADE)
+    frequency = models.CharField(max_length=10, choices=FREQUENCY_CHOICES)
     start_date = models.DateField(default=timezone.now)
     end_date = models.DateField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.task.title} - {self.frequency.get_name_display()}"
+        return f"{self.task.title} - {self.get_frequency_display()}"
 
     def clean(self):
         if self.start_date and self.end_date and self.start_date > self.end_date:
