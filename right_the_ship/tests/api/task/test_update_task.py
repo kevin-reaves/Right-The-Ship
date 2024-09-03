@@ -38,6 +38,7 @@ class TestUpdateTask(TestCase):
         "frequency": "weekly",
         "start_date": "2021-02-01",
         "end_date": "2021-03-01",
+        "day": 5,
     }
 
     def setUp(self):
