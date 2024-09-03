@@ -14,6 +14,7 @@ class TaskInSchema(Schema):
     start_date: Optional[date] = Field(None, description="Format: yyyy-mm-dd")
     end_date: Optional[date] = Field(None, description="Format: yyyy-mm-dd")
     user_id: int = Field(..., gt=0)
+    day: Optional[int] = Field(None, gt=0, lt=32)
 
 
 class TaskSchema(Schema):
@@ -30,3 +31,4 @@ class TaskDetailSchema(Schema):
     frequency: Optional[str] = None
     start_date: Optional[date] = None
     end_date: Optional[date] = None
+    day: Optional[int] = None

@@ -22,6 +22,7 @@ def generate_task_detail_schema(task: Task) -> TaskDetailSchema:
     frequency = recurring_task.frequency if is_recurring else None
     start_date = recurring_task.start_date if is_recurring else None
     end_date = recurring_task.end_date if is_recurring else None
+    day = recurring_task.day if is_recurring else None
 
     return TaskDetailSchema(
         task=TaskSchema.from_orm(task),
@@ -29,6 +30,7 @@ def generate_task_detail_schema(task: Task) -> TaskDetailSchema:
         frequency=frequency,
         start_date=start_date,
         end_date=end_date,
+        day=day,
     )
 
 
@@ -41,6 +43,7 @@ def create_task(request, data: TaskInSchema):
     frequency = task_data.pop("frequency", None)
     start_date = task_data.pop("start_date", None)
     end_date = task_data.pop("end_date", None)
+    day = task_data.pop("day", None)
 
     task = Task.objects.create(user=user, **task_data)
 
@@ -50,6 +53,7 @@ def create_task(request, data: TaskInSchema):
             frequency=frequency,
             start_date=start_date,
             end_date=end_date,
+            day=day,
         )
 
     return generate_task_detail_schema(task)
@@ -77,6 +81,7 @@ def update_task(request, task_id: int, data: TaskInSchema):
     frequency = task_data.pop("frequency", None)
     start_date = task_data.pop("start_date", None)
     end_date = task_data.pop("end_date", None)
+    day = task_data.pop("day", None)
 
     task = get_object_or_404(Task, id=task_id)
 
@@ -92,6 +97,7 @@ def update_task(request, task_id: int, data: TaskInSchema):
                 "frequency": frequency,
                 "start_date": start_date,
                 "end_date": end_date,
+                "day": day,
             },
         )
 
