@@ -54,8 +54,8 @@ class RecurringTask(models.Model):
         if self.frequency in [self.DAILY] and self.day:
             raise ValidationError("Day will be ignored for daily tasks")
 
-        if self.frequency == self.WEEKLY and (self.day < 1 or self.day > 7):
-            raise ValidationError("Day must be between 1 and 7 for weekly tasks")
+        if self.frequency == self.WEEKLY and (self.day < 0 or self.day > 6):
+            raise ValidationError("Day must be between 0 and 6 for weekly tasks")
 
         if self.frequency == self.MONTHLY and (self.day < 1 or self.day > 31):
             raise ValidationError("Day must be between 1 and 31 for monthly tasks")
