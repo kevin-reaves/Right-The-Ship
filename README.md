@@ -61,7 +61,7 @@ Single Task
 
 This is a single task that does not repeat. Here is an example of the input data.
 
-    "user_id": "{{created_user}}",
+    "user_id": "1",
     "title": "Make machos",
     "description": "Nachos are tasty.",
     "due_date": "2024-08-10",
